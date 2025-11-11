@@ -1,19 +1,26 @@
 return {
-  "folke/which-key.nvim",
-  event = "VeryLazy",
-  opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
-  },
-  keys = {
-    {
-      "<leader>?",
-      function()
-        require("which-key").show({ global = false })
-      end,
-      desc = "Buffer Local Keymaps (which-key)",
-    },
-  },
+	"folke/which-key.nvim",
+	event = "VeryLazy",
+	opts = {
+		preset = "helix",
+		spec = {
+			{ "<leader>f", group = "find" },
+			{ "<leader>g", group = "git" },
+			{ "<leader>q", group = "quit/close" },
+			{ "<leader>s", group = "search" },
+			{ "<leader>u", group = "ui" },
+			{ "<leader>a", group = "+File switch" },
+			{ "<leader>b", group = "+buffer" },
+			{ "<leader>i", group = "+lsp" },
+		},
+	},
+	keys = {
+		{
+			"<leader>?",
+			function()
+				require("which-key").show({ global = false })
+			end,
+			desc = "Buffer Local Keymaps (which-key)",
+		},
+	},
 }
-

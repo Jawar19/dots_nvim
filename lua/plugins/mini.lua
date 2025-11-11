@@ -18,6 +18,6 @@ return {
 		require("mini.icons").setup(_opts.icons)
 		require("mini.surround").setup(_opts.surround)
 		require("mini.ai").setup()
+		require("mini.diff")
 	end,
 }
-
