@@ -11,7 +11,7 @@ return {
 			tex = { "vale" }, -- ✅ Changed from chktex to vale
 			sh = { "shellcheck" },
 			python = { "ruff" },
-			markdown = { "markdownlint", "vale" }, -- Can use both
+			markdown = { "markdownlint-cli2" }, -- Can use both
 			-- c = { "cpplint" },
 			-- cpp = { "cpplint" },
 		}

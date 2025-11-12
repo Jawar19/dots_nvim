@@ -31,7 +31,8 @@ return {
 				-- Linters
 				"shellcheck",
 				"ruff",
-				"markdownlint",
+				"markdownlint-cli2",
+				"markdown-toc",
 
 				-- Formatters
 				"bibtex-tidy",
@@ -111,7 +112,7 @@ return {
 			-- ltex (grammar/spell check)
 			vim.lsp.config.ltex = {
 				cmd = { "ltex-ls" },
-				filetypes = { "tex", "plaintex", "bib", "markdown" },
+				filetypes = { "tex", "plaintex", "bib" },
 				root_markers = { ".git" },
 				capabilities = capabilities,
 				settings = {
@@ -119,6 +120,23 @@ return {
 						language = "en-US",
 					},
 				},
+			}
+
+			vim.lsp.config.cspell_ls = {
+				cmd = { "cspell-lsp", "--stdio" },
+				filetypes = {
+					"lua",
+					"python",
+					"javascript",
+					"typescript",
+					"html",
+					"css",
+					"json",
+					"yaml",
+					"markdown",
+					"gitcommit",
+				},
+				root_markers = { ".git" },
 			}
 
 			-- lua_ls (Lua)
@@ -151,6 +169,9 @@ return {
 				capabilities = capabilities,
 			}
 
+			-- Markdown
+			vim.lsp.config.marksman = {}
+
 			-- bashls (Bash)
 			vim.lsp.config.bashls = {
 				cmd = { "bash-language-server", "start" },
@@ -158,17 +179,16 @@ return {
 				root_markers = { ".git" },
 				capabilities = capabilities,
 			}
-
-			-- marksman (Markdown)
-			vim.lsp.config.marksman = {
-				cmd = { "marksman", "server" },
-				filetypes = { "markdown", "markdown.mdx" },
-				root_markers = { ".git", ".marksman.toml" },
-				capabilities = capabilities,
-			}
-
 			-- ✅ CRITICAL: Enable all LSP servers
-			vim.lsp.enable({ "clangd", "texlab", "ltex", "lua_ls", "pyright", "bashls", "marksman" })
+			vim.lsp.enable({
+				"clangd",
+				"texlab",
+				"ltex",
+				"lua_ls",
+				"pyright",
+				"bashls",
+				"marksman",
+			})
 
 			-- Keymaps for clangd source/header switching
 			vim.api.nvim_create_autocmd("LspAttach", {
