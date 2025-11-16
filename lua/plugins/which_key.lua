@@ -12,6 +12,10 @@ return {
 			{ "<leader>a", group = "+File switch" },
 			{ "<leader>b", group = "+buffer" },
 			{ "<leader>i", group = "+lsp" },
+			{ "<leader>x", group = "Todo" },
+			{ "<localleader>l", group = "Vimtex" },
+			{ "<leader>l", group = "LSP" },
+			{ "<leader>w", group = "Wiki" },
 		},
 	},
 	keys = {

@@ -116,40 +116,23 @@ map("n", "<leader>uC", function() snacks.picker.colorschemes() end, { desc = "Co
 -- =========================================
 -- 💡 LSP / Code Actions
 -- =========================================
-local picker = snacks.picker
-
--- LSP navigation
-map("n", "gd", picker.lsp_definitions, { desc = "Goto Definition" })
-map("n", "gD", picker.lsp_declarations, { desc = "Goto Declaration" })
-map("n", "gr", picker.lsp_references, { desc = "References", nowait = true })
-map("n", "gI", picker.lsp_implementations, { desc = "Goto Implementation" })
-map("n", "gy", picker.lsp_type_definitions, { desc = "Goto Type Definition" })
-
--- LSP pickers
-map("n", "<leader>ls", picker.lsp_symbols, { desc = "Buffer Symbols" })
-map("n", "<leader>lS", picker.lsp_workspace_symbols, { desc = "Workspace Symbols" })
-
--- Diagnostics
+-- LSP mappings moved to LspAttach handler in lua/plugins/lsp.lua so they are buffer-local
+-- (prevents conflicts with filetype-specific mappings, e.g., LaTeX)
+-- LSP Diagnostics & Actions (reformatted for keymaps.lua style)
+local picker = require("snacks").picker
 map("n", "<leader>ld", picker.diagnostics, { desc = "Project Diagnostics" })
 map("n", "<leader>lD", picker.diagnostics_buffer, { desc = "Buffer Diagnostics" })
-
--- Code actions
 map("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code Action" })
 map("i", "<C-c>a", function()
   vim.cmd("stopinsert")
   vim.lsp.buf.code_action()
 end, { desc = "Code Action (Insert Mode)" })
 
--- Rename
+-- Rename / hover / format
 map("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename Symbol" })
-map("n", "<leader>lR", function() snacks.rename.rename_file() end, { desc = "Rename File" })
-
--- Info & formatting
+map("n", "<leader>lR", function() require("snacks").rename.rename_file() end, { desc = "Rename File" })
 map("n", "<leader>li", vim.lsp.buf.hover, { desc = "Show Hover Info" })
-map("n", "<leader>lf", function()
-  vim.lsp.buf.format({ async = true })
-end, { desc = "Format Buffer" })
-
+map("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end, { desc = "Format Buffer" })
 
 -- =========================================
 -- 🧰 UI / Misc

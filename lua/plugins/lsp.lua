@@ -183,23 +183,81 @@ return {
 			vim.lsp.enable({
 				"clangd",
 				"texlab",
-				"ltex",
+				-- "ltex",
 				"lua_ls",
 				"pyright",
 				"bashls",
 				"marksman",
 			})
 
-			-- Keymaps for clangd source/header switching
 			vim.api.nvim_create_autocmd("LspAttach", {
 				callback = function(args)
 					local client = vim.lsp.get_client_by_id(args.data.client_id)
-					if client and client.name == "clangd" then
-						vim.keymap.set("n", "<leader>cR", "<cmd>ClangdSwitchSourceHeader<cr>", {
-							buffer = args.buf,
-							desc = "Switch Source/Header (C/C++)",
-						})
+					local bufnr = args.buf
+					-- If you prefer to keep LSP mappings out of tex buffers, skip here:
+					local ft = vim.bo[bufnr].filetype
+					if ft == "tex" then
+						return
 					end
+
+					local opts = { buffer = bufnr }
+
+					-- clangd-specific mapping (keep if clangd)
+					if client and client.name == "clangd" then
+						vim.keymap.set(
+							"n",
+							"<leader>cR",
+							"<cmd>ClangdSwitchSourceHeader<cr>",
+							vim.tbl_extend("force", opts, { desc = "Switch Source/Header (C/C++)" })
+						)
+					end
+
+					-- General LSP navigation & actions (buffer-local)
+					vim.keymap.set(
+						"n",
+						"gd",
+						vim.lsp.buf.definition,
+						vim.tbl_extend("force", opts, { desc = "Goto Definition" })
+					)
+					vim.keymap.set(
+						"n",
+						"gD",
+						vim.lsp.buf.declaration,
+						vim.tbl_extend("force", opts, { desc = "Goto Declaration" })
+					)
+					vim.keymap.set(
+						"n",
+						"gr",
+						vim.lsp.buf.references,
+						vim.tbl_extend("force", opts, { desc = "References", nowait = true })
+					)
+					vim.keymap.set(
+						"n",
+						"gI",
+						vim.lsp.buf.implementation,
+						vim.tbl_extend("force", opts, { desc = "Goto Implementation" })
+					)
+					vim.keymap.set(
+						"n",
+						"gy",
+						vim.lsp.buf.type_definition,
+						vim.tbl_extend("force", opts, { desc = "Goto Type Definition" })
+					)
+
+					-- LSP pickers (if you want to keep these tied to LSP attach)
+					local picker = require("snacks").picker
+					vim.keymap.set(
+						"n",
+						"<leader>ls",
+						picker.lsp_definitions,
+						vim.tbl_extend("force", opts, { desc = "Buffer Symbols" })
+					)
+					vim.keymap.set(
+						"n",
+						"<leader>lS",
+						picker.lsp_workspace_symbols,
+						vim.tbl_extend("force", opts, { desc = "Workspace Symbols" })
+					)
 				end,
 			})
 		end,
